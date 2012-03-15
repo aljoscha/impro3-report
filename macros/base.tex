@@ -1,0 +1,90 @@
+\newcommand{\longpage}{\enlargethispage{3\baselineskip}}
+\newcommand{\medpage}{\enlargethispage{2\baselineskip}}
+\newcommand{\shortpage}{\enlargethispage{\baselineskip}}
+\newcommand{\concskip}{\medskip}
+\newcommand{\myPrimRef}[1]{\textit{#1}} % how primary index entries will be marked 
+%
+\newcommand{\ie}{i.\,e.}
+\newcommand{\Ie}{I.\,e.}
+\newcommand{\eg}{e.\,g.}
+\newcommand{\Eg}{E.\,g.}
+\newcommand{\etAl}{et al.\xspace}
+\newcommand{\twod}{2\textsc{d}\xspace}
+\newcommand{\threed}{3\textsc{d}\xspace}
+%
+\newcommand{\tableheadline}[1]{\multicolumn{1}{c}{\spacedlowsmallcaps{#1}}}
+%
+\newcommand{\RA}{\ensuremath{\Rightarrow}}
+\newcommand{\ra}{\ensuremath{\rightarrow}}
+\newcommand{\lra}{\ensuremath{\leftrightarrow}}
+\newcommand{\On}{\ensuremath{O(n)}\xspace}
+\newcommand{\Ologn}{\ensuremath{O(\log n)}\xspace}
+\newcommand{\Oone}{\ensuremath{O(1)}\xspace}
+%
+\newcommand{\figadapt}[1]{(Figure adapted from \cite{#1})}
+
+% redefine \textmu to other mu commands usefull inside text
+% \renewcommand{\textmu}{$\upmu$}
+
+% Caption with defined width
+\newcommand{\wcaption}[2]{%
+   \begin{minipage}{#1}%
+   \caption{#2}%
+   \end{minipage}%
+}
+
+% Command for margin text with usefull style
+%\newcommand{\marginlabel}[1]{\mbox{}\marginline{\hspace{0pt}\footnotesize\sffamily #1}}%
+\newcommand{\marginlabel}[1]{\marginnote{#1}}%
+%\newcommand{\graffito}[1]{\marginnote{\small{}#1}}
+%\DeclareRobustCommand{\graffito}[1]{\marginpar{%
+%    \slshape\footnotesize%\small%
+%    \ifodd\thepage\raggedright\else\raggedleft\fi%
+%    \parindent=0pt\lineskip=0pt\lineskiplimit=0pt%\baselineskip=10pt
+%    \tolerance=2000\hyphenpenalty=300\exhyphenpenalty=300%
+%    \doublehyphendemerits=100000\finalhyphendemerits=\doublehyphendemerits%
+%    %\raggedright%
+%    \hspace{0pt}#1}}
+\DeclareRobustCommand{\graffito}[1]{\marginpar{%
+    \slshape\footnotesize%\small%
+    \raggedright%
+    \parindent=0pt\lineskip=0pt\lineskiplimit=0pt%\baselineskip=10pt
+    \tolerance=2000\hyphenpenalty=300\exhyphenpenalty=300%
+    \doublehyphendemerits=100000\finalhyphendemerits=\doublehyphendemerits%
+    %\raggedright%
+    \hspace{0pt}#1}}
+
+
+%\newcommand{\comment}[1]{\marginnote{#1}}%
+
+% Enable space for figures that extent into the margin (right and/or leftside)
+% Can be used inside a figure
+% Note: sidecap defines a similar environment 'wide' !
+\newenvironment{widespace}[2]{%
+   \begin{list}{}{%
+      \setlength{\topsep}{0pt}%
+      \setlength{\leftmargin}{#1}%
+      \setlength{\rightmargin}{#2}%
+      \setlength{\listparindent}{\parindent}%
+      \setlength{\itemindent}{\parskip}%
+   }%
+   \item[]%
+}%
+{%
+   \end{list}%
+}%
+
+\newlength{\marginwidth}
+\setlength{\marginwidth}{\marginparwidth}
+\addtolength{\marginwidth}{\marginparsep}
+
+%% Beispiel:
+% \begin{figure}
+% \begin{widespace}{-\marginwidth}{0pt}
+%  \subfloat[Bergzebrastute]
+%  {\includegraphics[width=0.45\linewidth]{../Bilder/Eingewoehnung2.jpg}}
+%  \hspace*{1em}
+%  \subfloat[Morro Moco]
+%  {\includegraphics[width=0.45\linewidth]{../Bilder/bergzebra2.jpg}}
+% \end{widespace}
+% \end{figure}

@@ -1,0 +1,727 @@
+% -------- Reference by number (author) ----------------------------------
+% %%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/natbib/natbib.pdf
+\usepackage[%
+	%round,	%(default) for round parentheses;
+	square,	% for square brackets;
+	%curly,	% for curly braces;
+	%angle,	% for angle brackets;
+	%colon,	% (default) to separate multiple citations with colons;
+	comma,	% to use commas as separaters;
+	%authoryear,% (default) for author-year citations;
+	numbers,	% for numerical citations;
+	%super,	% for superscripted numerical citations, as in Nature;
+	sort,		% orders multiple citations into the sequence in which they appear in the list of references;
+%	sort&compress,    % as sort but in addition multiple numerical citations
+%                   % are compressed if possible (as 3-6, 15);
+	%longnamesfirst,  % makes the first citation of any reference the equivalent of
+%                   % the starred variant (full author list) and subsequent citations
+%                   %normal (abbreviated list);
+	%sectionbib,      % redefines \thebibliography to issue \section* instead of \chapter*;
+%                   % valid only for classes with a \chapter command;
+%                   % to be used with the chapterbib package;
+	%nonamebreak,     % keeps all the authors names in a citation on one line;
+%                   %causes overfull hboxes but helps with some hyperref problems.
+]{natbib}
+
+%\RequirePackage[fixlanguage]{babelbib}
+%\bibliographystyle{babalpha-fl}%
+
+%%% Bibliography styles with natbib support
+%\bibliographystyle{plainnat} % Numeric Labels, alphabatical order
+%\bibliographystyle{abbrvnat} % same as plain, but shorter names
+%\bibliographystyle{unsrtnat} % same as plain, but appeariance in order of citation
+\bibliographystyle{alphaurl}    % labels are formed by author and year
+
+%%% Bibliography styles according to DIN
+%%% get from: http://www.ctan.org/tex-archive/biblio/bibtex/contrib/german/din1505/
+%\bibliographystyle{alphadin}
+%\bibliographystyle{abbrvdin}
+%\bibliographystyle{plaindin}
+%\bibliographystyle{unsrtdin}
+%\bibliographystyle{bib/bst/alphadin-mod} % Modifiziert: Kleinere Abstaende vor ";" und kein "+" bei etal.
+
+%%% Bibliography styles created with custombib
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/custom-bib/makebst.pdf
+%\bibliographystyle{bib/bst/AlphaDINFirstName}
+
+% other BibTeX styles: http://www.cs.stir.ac.uk/~kjt/software/latex/showbst.html
+
+% Listings
+
+\lstset{
+         basicstyle=\small\ttfamily, % Standardschrift
+         numbers=left,               % Ort der Zeilennummern
+         numberstyle=\tiny,          % Stil der Zeilennummern
+         stepnumber=2,               % Abstand zwischen den Zeilennummern
+         numbersep=5pt,              % Abstand der Nummern zum Text
+         tabsize=2,                  % Groesse von Tabs
+         extendedchars=true,         %
+         breaklines=true,            % Zeilen werden Umgebrochen
+         keywordstyle=[1]\textbf,    % Stil der Keywords
+ %        keywordstyle=[2]\textbf,    %
+ %        keywordstyle=[3]\textbf,    %
+ %        keywordstyle=[4]\textbf,    %
+         stringstyle=\color{stringcolor}, % Farbe der String
+         showspaces=false,           % Leerzeichen anzeigen ?
+         showtabs=false,             % Tabs anzeigen ?
+         showstringspaces=false     % Leerzeichen in Strings anzeigen ?
+         %frame=single
+ }
+ \lstloadlanguages{% Check Dokumentation for further languages ...
+         Java
+         %Pascal
+         %C
+         %C++
+         %XML
+         %HTML
+ }
+\lstset{
+    columns=fullflexible,
+    frame=shadowbox,
+    rulesepcolor=\color{black},
+    framexleftmargin=4mm,
+    xleftmargin=5mm,
+    xrightmargin=1mm,
+    numbers=left,
+    stepnumber=1,
+    numberblanklines=true,
+    captionpos=t
+}
+\lstdefinestyle{simple}{
+    frame=none,
+    framexleftmargin=1mm,
+    xleftmargin=0mm,
+    numbers=none
+}
+\lstdefinestyle{nonumbers}{
+    framexleftmargin=1mm,
+    xleftmargin=0mm,
+    numbers=none
+}
+
+%% Seitenlayout ==========================================================
+%
+% Layout laden um im Dokument den Befehl \layout nutzen zu koennen
+%%% Doc: no documentation
+%\usepackage[verbose]{layout}
+%
+
+% Layout mit 'geometry'
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/geometry/manual.pdf
+% \usepackage{geometry}
+
+\IfPackageLoaded{geometry}{%
+\geometry{%
+%%% Paper Groesse
+   a4paper, % Andere a0paper, a1paper, a2paper, a3paper, , a5paper, a6paper,
+            % b0paper, b1paper, b2paper, b3paper, b4paper, b5paper, b6paper
+            % letterpaper, executivepaper, legalpaper
+   %screen,  % a special paper size with (W,H) = (225mm,180mm)
+   %paperwidth=,
+   %paperheight=,
+   %papersize=, %{ width , height }
+   %landscape,  % Querformat
+   portrait,    % Hochformat
+%%% Koerper Groesse
+   %hscale=,      % ratio of width of total body to \paperwidth
+                  % hscale=0.8 is equivalent to width=0.8\paperwidth. (0.7 by default)
+   %vscale=,      % ratio of height of total body to \paperheight
+                  % vscale=0.9 is equivalent to height=0.9\paperheight.
+   %scale=,       % ratio of total body to the paper. scale={ h-scale , v-scale }
+   %totalwidth=,    % width of total body % (Generally, width >= textwidth)
+   %totalheight=,   % height of total body, excluding header and footer by default
+   %total=,        % total={ width , height }
+   %textwidth=,    % modifies \textwidth, the width of body
+   %textheight=,   % modifies \textheight, the height of body
+   %body=,        % { width , height } sets both \textwidth and \textheight of the body of page.
+   lines=45,       % enables users to specify \textheight by the number of lines.
+   %includehead,  % includes the head of the page, \headheight and \headsep, into total body.
+   %includefoot,  % includes the foot of the page, \footskip, into body.
+   %includeheadfoot, % sets both includehead and includefoot to true
+   %includemp,    % includes the margin notes, \marginparwidth and \marginparsep, into body
+   %includeall,   % sets both includeheadfoot and includemp to true.
+   %ignorehead,   % disregards the head of the page, headheight and headsep in determining vertical layout
+   ignorefoot,   % disregards the foot of page, footskip, in determining vertical layout
+   %ignoreheadfoot, % sets both ignorehead and ignorefoot to true.
+   %ignoremp,     % disregards the marginal notes in determining the horizontal margins
+   ignoreall,     % sets both ignoreheadfoot and ignoremp to true
+   heightrounded, % This option rounds \textheight to n-times (n: an integer) of \baselineskip
+   %hdivide=,     % { left margin , width , right margin }
+                  % Note that you should not specify all of the three parameters
+   %vdivide=,     % { top margin , height , bottom margin }
+   %divide=,      % ={A,B,C} %  is interpreted as hdivide={A,B,C} and vdivide={A,B,C}.
+%%% Margin
+   %left=80pt,        % left margin (for oneside) or inner margin (for twoside) of total body
+                  % alias: lmargin, inner
+   %right=,       % right or outer margin of total body
+                  % alias: rmargin outer
+   %top=,         % top margin of the page.
+                  % Alias : tmargin
+   %bottom=,      % bottom margin of the page
+                  % Alias : bmargin
+   %hmargin=,     % left and right margin. hmargin={ left margin , right margin }
+   %vmargin=,     % top and bottom margin. vmargin={ top margin , bottom margin }
+   %margin=,      % margin={A,B} is equivalent to hmargin={A,B} and vmargin={A,B}
+   %hmarginratio, % horizontal margin ratio of left (inner) to right (outer).
+   %vmarginratio, % vertical margin ratio of top to bottom.
+   %marginratio,  % marginratio={ horizontal ratio , vertical ratio }
+   %hcentering,   % sets auto-centering horizontally and is equivalent to hmarginratio=1:1
+   %vcentering,   % sets auto-centering vertically and is equivalent to vmarginratio=1:1
+   %centering,    % sets auto-centering and is equivalent to marginratio=1:1
+   %twoside,       % switches on twoside mode with left and right margins swapped on verso pages.
+   %asymmetric,   % implements a twosided layout in which margins are not swapped on alternate pages
+                  % and in which the marginal notes stay always on the same side.
+   bindingoffset=5mm,  % removes a specified space for binding
+%%% Dimensionen
+   %headheight=,  % Alias:  head
+   %headsep=,     % separation between header and text
+   %footskip=,    % distance separation between baseline of last line of text and baseline of footer
+                  % Alias: foot
+   %nohead,       % eliminates spaces for the head of the page
+                  % equivalent to both \headheight=0pt and \headsep=0pt.
+   %nofoot,       % eliminates spaces for the foot of the page
+                  % equivalent to \footskip=0pt.
+   %noheadfoot,   % equivalent to nohead and nofoot.
+   footnotesep=0pt, % changes the dimension \skip\footins,.
+                  % separation between the bottom of text body and the top of footnote text
+   marginparwidth=80pt, % width of the marginal notes
+                  % Alias: marginpar
+   %marginparsep=,% separation between body and marginal notes.
+   %nomarginpar,  % shrinks spaces for marginal notes to 0pt
+   %columnsep=,   % the separation between two columns in twocolumn mode.
+   %hoffset=,
+   %voffset=,
+   %offset=,      % horizontal and vertical offset.
+                  % offset={ hoffset , voffset }
+   %twocolumn,    % twocolumn=false denotes onecolumn
+   textwidth=400pt,   % sets \textwidth directly
+   %textheight=,  % sets \textheight directly
+   %reversemp,    % makes the marginal notes appear in the left (inner) margin
+                  % Alias: reversemarginpar
+}
+} % Endif
+
+% - Anzeigen des Layouts -
+\IfPackageLoaded{geometry}{%
+   %\geometry{showframe}
+}
+
+% Layout mit 'typearea'
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/koma-script/scrguide.pdf
+
+\IfPackageLoaded{typearea}{% Wenn typearea geladen ist
+   \IfPackageNotLoaded{geometry}{% aber nicht geometry
+      \typearea[current]{last}
+   }
+}
+
+% BCOR
+%    current  % Satzspiegelberechnung mit dem aktuell gültigen BCOR-Wert erneut
+%             % durchführen.
+% DIV
+%    calc     % Satzspiegelberechnung einschließlich Ermittlung eines guten
+%             % DIV-Wertes erneut durchführen.
+%    classic  % Satzspiegelberechnung nach dem
+%             % mittelalterlichen Buchseitenkanon
+%             % (Kreisberechnung) erneut durchführen.
+%    current  % Satzspiegelberechnung mit dem aktuell gültigen DIV-Wert erneut
+%             % durchführen.
+%    default  % Satzspiegelberechnung mit dem Standardwert für das aktuelle
+%             % Seitenformat und die aktuelle Schriftgröße erneut durchführen.
+%             % Falls kein Standardwert existiert calc anwenden.
+%    last     % Satzspiegelberechnung mit demselben DIV -Argument, das beim
+%             % letzten Aufruf angegeben wurde, erneut durchführen
+
+
+%\usepackage[colorgrid,texcoord,gridunit=mm]{showframe}
+
+\raggedbottom     % Variable Seitenhoehen zulassen
+
+% Farben ================================================================
+
+\IfDefined{definecolor}{%
+
+% Farbe der Ueberschriften
+%\definecolor{sectioncolor}{RGB}{0, 51, 153} % Blau
+%\definecolor{sectioncolor}{RGB}{0, 25, 152}    % Blau (dunkler))
+\definecolor{sectioncolor}{RGB}{0, 0, 0}    % Schwarz
+%
+% Farbe des Textes
+\definecolor{textcolor}{RGB}{0, 0, 0}        % Schwarz
+%
+% Farbe fuer grau hinterlegte Boxen (fuer Paket framed.sty)
+\definecolor{shadecolor}{gray}{0.90}
+
+% Farben fuer die Links im PDF
+\definecolor{pdfurlcolor}{rgb}{0,0,0.6}
+\definecolor{pdffilecolor}{rgb}{0.7,0,0}
+\definecolor{pdflinkcolor}{rgb}{0,0,0.0}
+\definecolor{pdfcitecolor}{rgb}{0,0,0.6}
+
+%% PDF-Linkfarben auf schwarz für den Druck:
+% \definecolor{pdfurlcolor}{rgb}{0,0,0}
+% \definecolor{pdffilecolor}{rgb}{0,0,0}
+% \definecolor{pdflinkcolor}{rgb}{0,0,0}
+% \definecolor{pdfcitecolor}{rgb}{0,0,0}
+
+
+% Farben fuer Listings
+\colorlet{stringcolor}{green!40!black!100}
+\colorlet{commencolor}{blue!0!black!100}
+
+} % Endif
+
+%% Aussehen der URLS======================================================
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/hyperref/doc/manual.pdf
+\hypersetup{
+   % Farben fuer die Links
+   pdfpagelabels,
+   colorlinks=true,         % Links erhalten Farben statt Kaeten
+   urlcolor=pdfurlcolor,    % \href{...}{...} external (URL)
+   filecolor=pdffilecolor,  % \href{...} local file
+   linkcolor=pdflinkcolor,  %\ref{...} and \pageref{...}
+   citecolor=pdfcitecolor,  %
+   % Links
+   raiselinks=true,			 % calculate real height of the link
+   breaklinks,              % Links berstehen Zeilenumbruch
+   %backref=page,            % Backlinks im Literaturverzeichnis (section, slide, page, none)
+   %pagebackref=true,        % Backlinks im Literaturverzeichnis mit Seitenangabe
+   verbose,
+   hyperindex=true,         % backlinkex index
+   linktocpage=true,        % Inhaltsverzeichnis verlinkt Seiten
+   hyperfootnotes=false,     % Keine Links auf Fussnoten
+   % Bookmarks
+   bookmarks=true,          % Erzeugung von Bookmarks fuer PDF-Viewer
+   bookmarksopenlevel=1,    % Gliederungstiefe der Bookmarks
+   bookmarksopen=true,      % Expandierte Untermenues in Bookmarks
+   bookmarksnumbered=true,  % Nummerierung der Bookmarks
+   bookmarkstype=toc,       % Art der Verzeichnisses
+   % Anchors
+   plainpages=false,        % Anchors even on plain pages ?
+   pageanchor=true,         % Pages are linkable
+   % PDF Informationen
+   pdftitle={},             % Titel
+   pdfauthor={},            % Autor
+   pdfcreator={LaTeX, hyperref, KOMA-Script}, % Ersteller
+   %pdfproducer={pdfeTeX 1.10b-2.1} %Produzent
+   pdfdisplaydoctitle=true, % Dokumententitel statt Dateiname im Fenstertitel
+   pdfstartview=FitH,       % Dokument wird Fit Width geaefnet
+   pdfpagemode=UseOutlines, % Bookmarks im Viewer anzeigen
+   pdfpagelabels=true,           % set PDF page labels
+   pdfpagelayout=TwoPageRight, % zweiseitige Darstellung: ungerade Seiten
+   									 % rechts im PDF-Viewer
+   %pdfpagelayout=SinglePage, % einseitige Darstellung
+}
+
+%fuer URL (nur wenn url geladen ist)
+\IfDefined{urlstyle}{
+	\urlstyle{tt} %sf
+}
+
+%% Kopf und Fusszeilen====================================================
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/koma-script/scrguide.pdf
+
+\usepackage[%
+   % headtopline,
+   % plainheadtopline,
+   % headsepline,
+   % plainheadsepline,
+   % footsepline,
+   % plainfootsepline,
+   % footbotline,
+   % plainfootbotline,
+   % ilines,
+   % clines,
+   % olines,
+   automark,
+   % autooneside,% ignore optional argument in automark at oneside
+   komastyle,
+   % standardstyle,
+   % markuppercase,
+   % markusedcase,
+   nouppercase,
+]{scrpage2}
+
+%\usepackage[%
+%   automark,         % automatische Aktualisierung der Kolumnentitel
+%   nouppercase,      % Grossbuchstaben verhindern
+%   %markuppercase    % Grossbuchstaben erzwingen
+%   %markusedcase     % vordefinierten Stil beibehalten
+%   %komastyle,       % Stil von Koma Script
+%   %standardstyle,   % Stil der Standardklassen
+%]{scrpage2}
+
+\IfElseChapterDefined{%
+   \pagestyle{scrheadings} % Seite mit Headern
+}{
+   \pagestyle{scrplain} % Seiten ohne Header
+}
+%\pagestyle{empty} % Seiten ohne Header
+%
+% loescht voreingestellte Stile
+\clearscrheadings
+\clearscrplain
+%
+% Was steht wo...
+\IfElseChapterDefined{
+   % Oben aussen: Kapitel und Section
+   % Unten aussen: Seitenzahl
+   % \ohead{\headmark} % Oben außen: Setzt Kapitel und Section automatisch
+   % \ofoot[\pagemark]{\pagemark}
+   % oder...
+   % Oben aussen: Seitenzahlen
+   % Oben innen: Kapitel und Section
+   \ohead{\pagemark}
+   \ihead{\headmark}
+   \ofoot[\pagemark]{} % Außen unten: Seitenzahlen bei plain
+}{
+   \cfoot[\pagemark]{\pagemark} % Mitte unten: Seitenzahlen bei plain
+}
+% Vollstaendige Liste der moeglichen Positionierungen
+% \lehead[scrplain-links-gerade]{scrheadings-links-gerade}
+% \cehead[scrplain-mittig-gerade]{scrheadings-mittig-gerade}
+% \rehead[scrplain-rechts-gerade]{scrheadings-rechts-gerade}
+% \lefoot[scrplain-links-gerade]{scrheadings-links-gerade}
+% \cefoot[scrplain-mittig-gerade]{scrheadings-mittig-gerade}
+% \refoot[scrplain-rechts-gerade]{scrheadings-rechts-gerade}
+% \lohead[scrplain-links-ungerade]{scrheadings-links-ungerade}
+% \cohead[scrplain-mittig-ungerade]{scrheadings-mittig-ungerade}
+% \rohead[scrplain-rechts-ungerade]{scrheadings-rechts-ungerade}
+% \lofoot[scrplain-links-ungerade]{scrheadings-links-ungerade}
+% \cofoot[scrplain-mittig-ungerade]{scrheadings-mittig-ungerade}
+% \rofoot[scrplain-rechts-ungerade]{scrheadings-rechts-ungerade}
+% \ihead[scrplain-innen]{scrheadings-innen}
+% \chead[scrplain-zentriert]{scrheadings-zentriert}
+% \ohead[scrplain-außen]{scrheadings-außen}
+% \ifoot[scrplain-innen]{scrheadings-innen}
+% \cfoot[scrplain-zentriert]{scrheadings-zentriert}
+% \ofoot[scrplain-außen]{scrheadings-außen}
+
+
+%\usepackage{lastpage} % Stellt 'LastPage' zur Verfuegung
+%\cfoot[Seite \pagemark~von \pageref{LastPage}]{} % Seitenzahl von Anzahl Seiten
+
+% Angezeigte Abschnitte im Header
+\IfElseChapterDefined{
+   \automark[section]{chapter} %[rechts]{links}
+}{
+   \automark[subsection]{section} %[rechts]{links}
+}
+%
+% Linien (moegliche Kombination mit Breiten)
+\IfChapterDefined{
+   %\setheadtopline{}     % modifiziert die Parameter fuer die Linie ueber dem
+   							  %	 Seitenkopf
+   %\setheadsepline{.4pt}[\color{black}]
+                         % modifiziert die Parameter fuer die Linie zwischen
+                         % Kopf und Textkörper
+   %\setfootsepline{}    % modifiziert die Parameter fuer die Linie zwischen
+   							 % Text und Fuß
+   %\setfootbotline{}    % modifiziert die Parameter fuer die Linie unter dem
+   							 % Seitenfuss
+}
+
+
+
+% Groesse des Headers
+
+% Breite von Kopf und Fusszeile einstellen
+% \setheadwidth[Verschiebung]{Breite}
+% \setfootwidth[Verschiebung]{Breite}
+% mögliche Werte
+% paper - die Breite des Papiers
+% page - die Breite der Seite
+% text - die Breite des Textbereichs
+% textwithmarginpar - die Breite des Textbereichs inklusive dem Seitenrand
+% head - die aktuelle Breite des Seitenkopfes
+% foot - die aktuelle Breite des Seitenfusses
+\setheadwidth[0pt]{text}
+\setfootwidth[0pt]{text}
+
+%\setheadwidth[]%
+%{%
+%   paper % width of paper
+%   page  % width of page (paper - BCOR)
+%   text  % \textwidth
+%   textwithmarginpar % width of text plus margin
+%   head  % current width of head
+%   foot  % current width of foot
+%}%
+
+
+%% Fussnoten =============================================================
+% Keine hochgestellten Ziffern in der Fussnote (KOMA-Script-spezifisch):
+\deffootnote{1.5em}{1em}{\makebox[1.5em][l]{\thefootnotemark}}
+\addtolength{\skip\footins}{\baselineskip} % Abstand Text <-> Fussnote
+
+\setlength{\dimen\footins}{10\baselineskip} % Beschraenkt den Platz von Fussnoten auf 10 Zeilen
+
+\interfootnotelinepenalty=10000 % Verhindert das Fortsetzen von
+                                % Fussnoten auf der gegenüberligenden Seite
+
+
+%% Schriften (Sections )==================================================
+
+\IfElsePackageLoaded{fourier}{
+   \newcommand\SectionFontStyle{\rmfamily}
+}{
+   \newcommand\SectionFontStyle{\sffamily}
+}
+
+% -- Koma Schriften --
+\IfChapterDefined{%
+   \setkomafont{chapter}{\huge\SectionFontStyle}    % Chapter
+   %\setkomafont{chapter}{\bfseries\Huge\SectionFontStyle}    % Chapter
+   %\addtokomafont{chapterentry}{\bfseries}
+}
+
+\addtokomafont{paragraph}{\bfseries}
+\setkomafont{sectioning}{\SectionFontStyle}
+%\setkomafont{part}{\usekomafont{sectioning}}
+%\setkomafont{section}{\usekomafont{sectioning}}
+%\setkomafont{subsection}{\usekomafont{sectioning}}
+%\setkomafont{subsubsection}{\usekomafont{sectioning}}
+%\setkomafont{paragraph}{\usekomafont{sectioning}}
+%\setkomafont{subparagraph}{\usekomafont{sectioning}}
+
+\setkomafont{descriptionlabel}{\itshape}
+
+%\setkomafont{caption}{\normalfont}
+%\setkomafont{captionlabel}{\normalfont}
+
+%\setkomafont{dictum}{}
+%\setkomafont{dictumauthor}{}
+%\setkomafont{dictumtext}{}
+%\setkomafont{disposition}{}
+%\setkomafont{footnote}{}
+%\setkomafont{footnotelabel}{}
+%\setkomafont{footnotereference}{}
+%\setkomafont{minisec}{}
+
+%\setkomafont{partnumber}{\bfseries\SectionFontStyle}
+%\setkomafont{partentrynumber}{}
+%\setkomafont{chapterentrypagenumber}{}
+%\setkomafont{sectionentrypagenumber}{}
+
+\setkomafont{pageheadfoot}{\normalfont\normalcolor\small\sffamily}
+\setkomafont{pagenumber}{\bfseries\usekomafont{sectioning}}
+
+%\setkomafont{partentry}{\usekomafont{sectioning}\large}
+%\setkomafont{chapterentry}{\usekomafont{sectioning}}
+%\setkomafont{sectionentry}{\usekomafont{sectioning}}
+
+%%% --- Titlepage ---
+%\setkomafont{subject}{}
+%\setkomafont{subtitle}{}
+%\setkomafont{title}{}
+
+
+
+\addtokomafont{sectioning}{\color{sectioncolor}} % Farbe der Ueberschriften
+\IfChapterDefined{%
+	\addtokomafont{chapter}{\color{sectioncolor}} % Farbe der Ueberschriften
+}
+\renewcommand*{\raggedsection}{\raggedright} % Titelzeile linksbuendig, haengend
+%
+%% UeberSchriften (Chapter und Sections) =================================
+
+%%% Remove Space above Chapter.
+%%% (NOT recommanded!)
+%% Space above Chapter Title
+% \renewcommand*{\chapterheadstartvskip}{\vspace{1\baselineskip}}%
+%% Space below Chapter Title
+% \renewcommand*{\chapterheadendvskip}{\vspace{0.5\baselineskip}}%
+
+% -- Ueberschriften komlett Umdefinieren --
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/titlesec/titlesec.pdf
+%\usepackage{titlesec}
+
+% -- Section Aussehen veraendern --
+% --------------------------------
+%% -> Section mit Unterstrich
+% \titleformat{\section}
+%   [hang]%[frame]display
+%   {\usekomafont{sectioning}\Large}
+%  {\thesection}
+%   {6pt}
+%   {}
+%   [\titlerule \vspace{0.5\baselineskip}]
+% --------------------------------
+
+% -- Chapter Aussehen veraendern --
+% --------------------------------
+%--> Box mit (Kapitel + Nummer ) +  Name
+% \titleformat{\chapter}[display]     % {command}[shape]
+%   {\usekomafont{chapter}\filcenter} % format
+%   {                                 % label
+%   {\fcolorbox{black}{shadecolor}{
+%   {\huge\chaptertitlename\mbox{\hspace{1mm}}\thechapter}
+%   }}}
+%   {1pc}                             % sep (from chapternumber)
+%   {\vspace{1pc}}                    % {before}[after] (before chaptertitle and after)
+% --------------------------------
+%--> Kapitel + Nummer + Trennlinie + Name + Trennlinie
+%\titleformat{\chapter}[display]	% {command}[shape]
+%  {\usekomafont{chapter}\Large \color{black}}	% format
+%  {   										% label
+%  \LARGE\MakeUppercase{\chaptertitlename} \Huge \thechapter \filright%
+%  }%}
+%  {1pt}										% sep (from chapternumber)
+%  {\titlerule \vspace{0.9pc} \filright \color{sectioncolor}}   % {before}[after] (before chaptertitle and after)
+%  [\color{black} \vspace{0.9pc} \filright {\titlerule}]
+
+
+%%% Doc: No documentation
+% Indent first paragraph after section header
+% \usepackage{indentfirst}
+
+%% Captions (Schrift, Aussehen) ==========================================
+
+% % Folgende Befehle werden durch das Paket caption und subfig ersetzt !
+% \setcapindent{1em} % Einrueckung der Beschriftung
+% \setkomafont{caption}{\color{black}\small\sffamily\RaggedRight}  % Schrift fuer Caption
+% \setkomafont{captionlabel}{\color{black}\small}   % Schrift fuer 'Abbildung' usw.
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/caption/caption.pdf
+\usepackage{caption}
+% Aussehen der Captions
+\captionsetup{
+   margin = 10pt,
+   font = {small,rm},
+   labelfont = {small,bf},
+   format = plain, % oder 'hang'
+   indention = 0em,  % Einruecken der Beschriftung
+   labelsep = colon, %period, space, quad, newline
+   justification = RaggedRight, % justified, centering
+   singlelinecheck = true, % false (true=bei einer Zeile immer zentrieren)
+   position = bottom %top
+}
+%%% Bugfix Workaround
+\DeclareCaptionOption{parskip}[]{}
+\DeclareCaptionOption{parindent}[]{}
+
+% Aussehen der Captions fuer subfigures (subfig-Paket)
+\IfPackageLoaded{subfig}{
+ \captionsetup[subfloat]{%
+   margin = 10pt,
+   font = {small,rm},
+   labelfont = {small,bf},
+   format = plain, % oder 'hang'
+   indention = 0em,  % Einruecken der Beschriftung
+   labelsep = space, %period, space, quad, newline
+   justification = RaggedRight, % justified, centering
+   singlelinecheck = true, % false (true=bei einer Zeile immer zentrieren)
+   position = bottom, %top
+   labelformat = parens % simple, empty % Wie die Bezeichnung gesetzt wird
+ }
+}
+
+% Aendern der Bezeichnung fuer Abbildung und Tabelle
+% \addto\captionsngerman{% "captionsgerman" fuer alte  Rechschreibung
+%   \renewcommand{\figurename}{Abb.}%
+%   \renewcommand{\tablename}{Tab.}%
+% }
+
+%% Inhaltsverzeichnis (Schrift, Aussehen) sowie weitere Verzeichnisse ====
+
+\setcounter{secnumdepth}{2}    % Abbildungsnummerierung mit groesserer Tiefe
+\setcounter{tocdepth}{2}		 % Inhaltsverzeichnis mit groesserer Tiefe
+%
+
+% Inhalte von List of Figures
+\IfPackageLoaded{subfig}{
+	\setcounter{lofdepth}{1}  %1 = nur figures, 2 = figures + subfigures
+}
+
+% -------------------------------------------------------
+
+% Aussehen des Inhaltsverzeichnisses: tocloft
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf
+%% Laden mit Option subfigure in Abhaengigkeit vom Paket subfigure und subfig
+% \IfElsePackageLoaded{subfig}
+% 	% IF subfig
+% 	{\usepackage[subfigure]{tocloft}}{
+% 	% ELSE
+% 	\IfElsePackageLoaded{subfigure}
+% 		% IF subfigure
+% 		{\usepackage[subfigure]{tocloft}}
+% 	   % Else (No subfig nor subfigure)
+% 		{\usepackage{tocloft}}
+% 	}
+%
+% %TOCLOFT zerstoert Layout der Ueberschriften von TOC, LOT, LOF
+% \IfPackageLoaded{tocloft}{
+% %
+% %%%% Layout Matthias Pospiech (alles serifenlos)
+% \IfChapterDefined{%
+% 	\renewcommand{\cftchappagefont}{\bfseries\sffamily}  % Kapitel Seiten Schrift
+% 	\renewcommand{\cftchapfont}{\bfseries\sffamily}      % Kapitel Schrift
+% }
+% \renewcommand{\cftsecpagefont}{\sffamily}            % Section Seiten Schrift
+% \renewcommand{\cftsubsecpagefont}{\sffamily}         % Subsectin Seiten Schrift
+% \renewcommand{\cftsecfont}{\sffamily}                % Section Schrift
+% \renewcommand{\cftsubsecfont}{\sffamily}             % Subsection Schrift
+%
+% %%%% Layout aus Typokurz:
+% % % Seitenzahlen direkt hinter TOC-Eintrag:
+% % % Ebene \chapter
+% % \renewcommand{\cftchapleader}{}
+% % \renewcommand{\cftchapafterpnum}{\cftparfillskip}
+% % % Ebene \section
+% % \renewcommand{\cftsecleader}{}
+% % \renewcommand{\cftsecafterpnum}{\cftparfillskip}
+% % % Ebene \subsection
+% % \renewcommand{\cftsubsecleader}{}
+% % \renewcommand{\cftsubsecafterpnum}{\cftparfillskip}
+% % % Abstaende vor Eintraegen im TOC verkleinern
+% % \setlength{\cftbeforesecskip}{.4\baselineskip}
+% % \setlength{\cftbeforesubsecskip}{.1\baselineskip}
+% }
+% % Ende tocloft Einstellungen --------------
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/ms/multitoc.dvi
+% TOC in mehreren Spalten setzen
+%\usepackage[toc]{multitoc}
+
+% -------------------------
+
+%%Schriften fuer Minitoc (Inhaltsverzeichnis vor jedem Kapitel)
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/minitoc/minitoc.pdf
+%\IfChapterDefined{%
+% \usepackage{minitoc}
+% \setlength{\mtcindent}{0em} % default: 24pt
+% \setcounter{minitocdepth}{2}
+% \setlength{\mtcskipamount}{\bigskipamount}
+% \mtcsettitlefont{minitoc}{\normalsize\SectionFontStyle}
+% \mtcsetfont{minitoc}{*}{\small\SectionFontStyle} %\color{textcolor}
+% \mtcsetfont{minitoc}{section}{\small\SectionFontStyle}
+% \mtcsetfont{minitoc}{subsection}{\small\SectionFontStyle}
+% \mtcsetfont{minitoc}{subsubsection}{\small\SectionFontStyle}
+%}
+%{%
+%\usepackage{minitoc}
+%\setlength{\stcindent}{0pt} %default
+%\setcounter{secttocdepth}{2} %default
+%\mtcsettitlefont{secttoc}{\SectionFontStyle}
+%\mtcsetfont{secttoc}{*}{\small\SectionFontStyle}%
+%\mtcsetfont{secttoc}{subsection}{\small\SectionFontStyle}
+%\mtcsetfont{secttoc}{subsubsection}{\small\SectionFontStyle}
+%}
+
+% Packages that MUST be loaded before minitoc !
+% hyperref, caption, sectsty, varsects, fncychap, hangcaption, quotchap, romannum, sfheaders, alnumsec, captcont
+
+
+%% Index & Co. ===========================================================
+% gibts dafuer noch eine sauberere Loesung ?
+%%%%%%%% Index zweispaltig %%%%%%%
+% \makeatletter
+% \renewenvironment{theindex}{%
+% \setlength{\columnsep}{2em}
+% \begin{multicols}{2}[\section*{\indexname}]
+% \parindent\z@
+% \parskip\z@ \@plus .3\p@\relax
+% \let\item\@idxitem}%
+% {\end{multicols}\clearpage}
+% \makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

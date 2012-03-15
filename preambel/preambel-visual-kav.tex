@@ -1,0 +1,330 @@
+%%% Used packages
+\usepackage{fancyhdr}
+\usepackage{titletoc}
+\usepackage{titlesec}
+
+\usepackage{mathptmx}
+\usepackage[scaled=.92]{helvet}
+\usepackage{courier}
+
+
+%%% Colors
+\IfDefined{definecolor}{%
+
+% Farbe der Ueberschriften
+%\definecolor{sectioncolor}{RGB}{0, 51, 153} % Blau
+%\definecolor{sectioncolor}{RGB}{0, 25, 152} % Blau (dunkler))
+\definecolor{sectioncolor}{RGB}{0, 0, 0}     % Schwarz
+%
+% Farbe des Textes
+\definecolor{textcolor}{RGB}{0, 0, 0}        % Schwarz
+%
+% Farbe fuer grau hinterlegte Boxen (fuer Paket framed.sty)
+\definecolor{shadecolor}{gray}{0.90}
+
+% Farben fuer die Links im PDF
+\definecolor{pdfurlcolor}{rgb}{0,0,0.6}
+\definecolor{pdffilecolor}{rgb}{0.7,0,0}
+\definecolor{pdflinkcolor}{rgb}{0,0,0.0}
+\definecolor{pdfcitecolor}{rgb}{0,0,0.6}
+
+%% PDF-Linkfarben auf schwarz für den Druck:
+% \definecolor{pdfurlcolor}{rgb}{0,0,0}
+% \definecolor{pdffilecolor}{rgb}{0,0,0}
+% \definecolor{pdflinkcolor}{rgb}{0,0,0}
+% \definecolor{pdfcitecolor}{rgb}{0,0,0}
+
+% Farben fuer Listings
+\colorlet{stringcolor}{green!40!black!100}
+\colorlet{commencolor}{blue!0!black!100}
+
+} % Endif
+
+
+%%% Styling of chapters, sections, subsections ...
+\setkomafont{sectioning}{\rmfamily}
+\setkomafont{descriptionlabel}{\rmfamily\bfseries}
+
+
+\IfElseChapterDefined{
+
+\titleformat{\chapter}[hang]
+{\Large\bfseries}
+{\thechapter{}.~}
+{0ex}
+{}
+
+\titleformat{\section}[hang]
+{\large\bfseries}
+{\thesection~}
+{0ex}
+{}
+[]
+
+\titlespacing*{\section}{0ex}{4ex plus 1ex minus .4ex}{2ex plus .2ex}
+
+}{
+
+\titleformat{\section}[hang]
+{\Large\bfseries}
+{\thesection{}.~}
+{0ex}
+{}
+
+\titleformat{\subsection}[hang]
+{\large\bfseries}
+{\thesubsection~}
+{0ex}
+{}
+[]
+
+\titlespacing*{\subsection}{0ex}{4ex plus 1ex minus .4ex}{2ex plus .2ex}
+
+}
+
+
+%\setkomafont{section}{\normalsize\bfseries}
+%\titlespacing*{\section}{0pt}{4ex plus 1ex minus .4ex}{1ex plus .2ex}
+% * kills parindent 
+
+%\setkomafont{subsection}{\fontsize{12}{16}\selectfont}
+%\titlespacing*{\subsection}{0pt}{3ex plus .1ex minus .4ex}{.5ex plus .2ex}
+
+%\setkomafont{subsubsection}{\fontsize{11}{16}\selectfont}
+%\titlespacing*{\subsubsection}{0pt}{2ex plus .1ex minus .2ex}{.2ex plus .2ex}
+
+%%% Table of contents
+\setcounter{tocdepth}{1}
+\setcounter{secnumdepth}{2}
+
+\contentsmargin{1.2em}
+
+\IfElseChapterDefined{
+
+\titlecontents{chapter}
+  [0pc]% distance from left margin
+  {\addvspace{1pc}\bfseries}% global formatting before entry
+  {\hspace*{2pc}\contentslabel[\thecontentslabel.]{2pc}}% before entry when it has a number
+  {}% before entry when it does not have a number
+  {\normalfont\titlerule*[0.6pc]{.}\contentspage}% the page number
+  [\addvspace{0.1pt}]% after the entry
+
+\titlecontents{section}
+  [2pc]
+  {}
+  {\thecontentslabel\enspace}
+  {}
+  {\normalfont\titlerule*[0.6pc]{.}\contentspage}% the page number
+
+}{
+
+\titlecontents{section}
+  [0pc]% distance from left margin
+  {\addvspace{1pc}\bfseries}% global formatting before entry
+  {\hspace*{2pc}\contentslabel[\thecontentslabel.]{2pc}}% before entry when it has a number
+  {}% before entry when it does not have a number
+  {\normalfont\titlerule*[0.6pc]{.}\contentspage}% the page number
+  [\addvspace{0.1pt}]% after the entry
+
+\titlecontents{subsection}
+  [2pc]
+  {}
+  {\thecontentslabel\enspace}
+  {}
+  {\normalfont\titlerule*[0.6pc]{.}\contentspage}% the page number
+
+}
+
+
+% Fancyhdr stuff
+\newlength\myfancyhfoffset\setlength\myfancyhfoffset{0pt}
+\pagestyle{fancy}
+\fancyheadoffset{\myfancyhfoffset}
+\fancyfootoffset{\myfancyhfoffset}
+\IfChapterDefined{
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\enspace#1}{\thechapter.\enspace#1}}
+}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\enspace#1}}
+%\renewcommand{\sectionmark}[1]{\markright{\normalfont\normalsize\thesection\hspace{5pt}#1}{}}
+%\renewcommand{\sectionmark}[1]{\markright{\normalfont\normalsize\scshape#1}}
+\fancyhf{}
+\fancyhead[LE,RO]{\normalfont\small\thepage}
+\fancyhead[LO]{\small\rightmark}
+\fancyhead[RE]{\small\leftmark}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{
+\fancyhead{}
+\fancyfoot[C]{\normalfont\small\thepage}
+\renewcommand{\headrulewidth}{0pt}}
+
+% Bibliography
+\usepackage[%
+	square,	 % for square brackets;
+	comma,	 % to use commas as separaters;
+	numbers, % for numerical citations;
+	sort,    % orders multiple citations into the sequence in which they appear in the list of references;
+]{natbib}
+
+\bibliographystyle{alphaurl}    % labels are formed by author and year
+
+%%% Listings
+\lstset{
+    basicstyle=\small\ttfamily,
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=2,
+    numbersep=5pt,
+    tabsize=2,
+    extendedchars=true,
+    breaklines=true,
+    keywordstyle=[1]\textbf,
+    keywordstyle=[2]\textbf,
+    keywordstyle=[3]\textbf,
+    keywordstyle=[4]\textbf,
+    stringstyle=\color{stringcolor},
+    showspaces=false,
+    showtabs=false,
+    showstringspaces=false,
+    columns=fullflexible,
+    frame=shadowbox,
+    rulesepcolor=\color{black},
+    framexleftmargin=4mm,
+    xleftmargin=5mm,
+    xrightmargin=1mm,
+    numbers=left,
+    stepnumber=1,
+    numberblanklines=true,
+    captionpos=t
+ }
+ \lstloadlanguages{% Check Dokumentation for further languages ...
+         Java,
+         Python
+         %Pascal
+         %C
+         %C++
+         %XML
+         %HTML
+ }
+\lstdefinestyle{simple}{
+    frame=none,
+    framexleftmargin=1mm,
+    xleftmargin=0mm,
+    numbers=none
+}
+\lstdefinestyle{nonumbers}{
+    framexleftmargin=1mm,
+    xleftmargin=0mm,
+    numbers=none
+}
+
+% Page Layout
+\usepackage[top=3cm,left=3cm,right=3cm,bottom=4cm,a4paper]{geometry}
+
+\IfPackageLoaded{typearea}{
+   \IfPackageNotLoaded{geometry}{
+      \typearea[current]{last}
+   }
+}
+
+\raggedbottom % Allow variable page heights, probably bad for towside
+
+%%% PDF & Url stuff
+\hypersetup{
+   % Farben fuer die Links
+   pdfpagelabels,
+   colorlinks=true,         % Links erhalten Farben statt Kaeten
+   urlcolor=pdfurlcolor,    % \href{...}{...} external (URL)
+   filecolor=pdffilecolor,  % \href{...} local file
+   linkcolor=pdflinkcolor,  %\ref{...} and \pageref{...}
+   citecolor=pdfcitecolor,  %
+   % Links
+   raiselinks=true,			 % calculate real height of the link
+   breaklinks,              % Links berstehen Zeilenumbruch
+   %backref=page,            % Backlinks im Literaturverzeichnis (section, slide, page, none)
+   %pagebackref=true,        % Backlinks im Literaturverzeichnis mit Seitenangabe
+   verbose,
+   hyperindex=true,         % backlinkex index
+   linktocpage=true,        % Inhaltsverzeichnis verlinkt Seiten
+   hyperfootnotes=false,     % Keine Links auf Fussnoten
+   % Bookmarks
+   bookmarks=true,          % Erzeugung von Bookmarks fuer PDF-Viewer
+   bookmarksopenlevel=1,    % Gliederungstiefe der Bookmarks
+   bookmarksopen=true,      % Expandierte Untermenues in Bookmarks
+   bookmarksnumbered=true,  % Nummerierung der Bookmarks
+   bookmarkstype=toc,       % Art der Verzeichnisses
+   % Anchors
+   plainpages=false,        % Anchors even on plain pages ?
+   pageanchor=true,         % Pages are linkable
+   % PDF Informationen
+   pdftitle={},             % Titel
+   pdfauthor={},            % Autor
+   pdfcreator={LaTeX, hyperref, KOMA-Script}, % Ersteller
+   %pdfproducer={pdfeTeX 1.10b-2.1} %Produzent
+   pdfdisplaydoctitle=true, % Dokumententitel statt Dateiname im Fenstertitel
+   pdfstartview=FitH,       % Dokument wird Fit Width geaefnet
+   pdfpagemode=UseOutlines, % Bookmarks im Viewer anzeigen
+   pdfpagelabels=true,           % set PDF page labels
+   %pdfpagelayout=TwoPageRight, % zweiseitige Darstellung: ungerade Seiten
+   									 % rechts im PDF-Viewer
+   pdfpagelayout=SinglePage, % einseitige Darstellung
+}
+
+% URLs
+\IfDefined{urlstyle}{
+	\urlstyle{tt} %sf
+}
+
+
+%%% Footnoes
+% Keine hochgestellten Ziffern in der Fussnote (KOMA-Script-spezifisch):
+\deffootnote{1.5em}{1em}{\makebox[1.5em][l]{\thefootnotemark}}
+\addtolength{\skip\footins}{\baselineskip} % Abstand Text <-> Fussnote
+
+\setlength{\dimen\footins}{10\baselineskip} % Beschraenkt den Platz von Fussnoten auf 10 Zeilen
+
+\interfootnotelinepenalty=10000 % Verhindert das Fortsetzen von
+                                % Fussnoten auf der gegenüberligenden Seite
+
+%%% Figures and stuff
+\usepackage{caption}
+% Aussehen der Captions
+\captionsetup{
+   margin = 20pt,
+   labelfont={sf,bf,footnotesize},
+   font = {sf,bf,footnotesize},
+   indention = 0em,  % Einruecken der Beschriftung
+   labelsep = period, %period, space, quad, newline
+   justification = RaggedRight, % justified, centering
+   singlelinecheck = true, % false (true=bei einer Zeile immer zentrieren)
+   position = bottom %top
+}
+%%% Bugfix Workaround
+\DeclareCaptionOption{parskip}[]{}
+\DeclareCaptionOption{parindent}[]{}
+
+% Aussehen der Captions fuer subfigures (subfig-Paket)
+\IfPackageLoaded{subfig}{
+ \captionsetup[subfloat]{%
+   margin = 10pt,
+   font = {small,rm},
+   labelfont = {small,bf},
+   format = plain, % oder 'hang'
+   indention = 0em,  % Einruecken der Beschriftung
+   labelsep = space, %period, space, quad, newline
+   justification = RaggedRight, % justified, centering
+   singlelinecheck = true, % false (true=bei einer Zeile immer zentrieren)
+   position = bottom, %top
+   labelformat = parens % simple, empty % Wie die Bezeichnung gesetzt wird
+ }
+}
+
+% Aendern der Bezeichnung fuer Abbildung und Tabelle
+% \addto\captionsngerman{% "captionsgerman" fuer alte  Rechschreibung
+%   \renewcommand{\figurename}{Abb.}%
+%   \renewcommand{\tablename}{Tab.}%
+% }
+
+% Inhalte von List of Figures
+\IfPackageLoaded{subfig}{
+	\setcounter{lofdepth}{1}  %1 = nur figures, 2 = figures + subfigures
+}

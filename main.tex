@@ -1,0 +1,88 @@
+\documentclass[%
+   %draft,     % Entwurfsstadium
+   final,      % fertiges Dokument
+	 % --- Paper Settings ---
+   paper=a4,% [Todo: add alternatives]
+   paper=portrait, % landscape
+   pagesize=auto, % driver
+   % --- Base Font Size ---
+   fontsize=12pt,%
+	 % --- Koma Script Version ---
+   version=last, %
+   twoside
+]{scrbook} % Classes: scrartcl, scrreprt, scrbook
+
+\usepackage[utf8]{inputenc}
+
+% Preambel
+\input{preambel/preambel-commands}
+\input{preambel/settings}
+\input{preambel/preambel}
+\input{preambel/preambel-visual-kav}
+
+% Neue Befehle
+\input{macros/base}
+\input{macros/perproject}
+\input{macros/TableCommands}
+
+% Silbentrennung
+\input{preambel/hyphenation}
+
+\usepackage{tikz}
+\usetikzlibrary{intersections}
+\usetikzlibrary{arrows,shapes,shadows,decorations.pathmorphing,backgrounds,positioning,fit}
+
+
+
+% - Deckblatt,
+% - Inhaltsverzeichnis,
+% - Hauptteil gegliedert z.B. in
+%   Einleitung, Grundlagen, Experimente, Ergebnisse, Zusammenfassung
+% - Literaturverzeichnis,
+% - Abbildungsverzeichnis (ggf.),
+% - Tabellenverzeichnis (ggf.),
+% - Abkürzungsverzeichnis (ggf.),
+% - Formelverzeichnis (ggf.),
+% - Anhang, (nicht mehr Bestandteil der Arbeit! Wird daher nicht bewertet)
+% - Erklärung der Urheberschaft,
+
+\begin{document}
+% Deckblatt
+\frontmatter
+\input{content/dhbw-title}
+\input{content/declaration}
+
+\selectlanguage{english}
+
+\cleardoublepage
+% Inhaltsverzeichnis in den PDF-Links eintragen
+\pdfbookmark[1]{Contents}{toc}
+\tableofcontents
+%\input{content/acronyms}
+
+% Hauptteil
+\mainmatter
+\input{content/Vorlage/demo.tex}
+
+
+
+% Anhang (Bibliographie darf im deutschen nicht in den Anhang!)
+\bibliography{bib/main}
+\clearpage
+% Abbildungs- und Tabellenverzeichnis
+\listoffigures
+\listoftables
+\renewcommand{\lstlistlistingname}{List of Listings}
+\lstlistoflistings
+
+% Richtiger Anhang
+\appendix
+% 'Anhang' ins Inhaltsverzeichnis
+%\phantomsection
+%\addcontentsline{toc}{part}{Anhang}
+
+
+\IfDefined{printindex}{\printindex}
+\IfDefined{printnomenclature}{\printnomenclature}
+
+\end{document}
