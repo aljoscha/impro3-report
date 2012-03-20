@@ -1,6 +1,62 @@
 % Estmal alles in einem .tex file, evtl später in mehr aufspalten ...
 
-\section{Bla}
-Hello Fabian
+\section{Introduction}
+Presslufthammer is an attempt at developing a prototype of the Dremel Query
+System \cite{melnik2010dremel} developed by Google. Dremel is purportedly the
+technology that powers the Google BigQuery \cite{bigquery} system so we will
+mention this here as well and also sometimes refer to the BigQuery online
+documentation when talking about features of the Presslufthammer system
+and also in comparing the functionality.
 
-\section{Blib}
+Dremel is a system that allows relational queries\footnote{BigQuery
+(and Dremel) use a query language that is very similar to SQL: 
+\url{https://developers.google.com/bigquery/docs/query-reference}.} to be
+performed on a cluster of machines on very large datasets. The focus here
+is on aggregation queries that have very small result sets compared to the
+processed amounts of data and that are ``interactive'', meaning that the
+results are available quick enough to work with the system interactively.
+
+For more in-depth background information about Dremel and BigQuery you should
+consult the paper respectively the documentation. We will only highlight
+some key components and difficulties in the following sections.
+
+\subsection{Division of Work}
+
+The Dremel systems has a very modular architecture, making it easy to share the
+work. We identified to following key components (The person working on that
+particular component is mentioned in parentheses):
+
+\begin{itemize}
+  \item Columnar data representation (Aljoscha)
+  \item Parsing, analysis, transformation and execution of Queries (Aljoscha)
+  \item Network architecture (Fabian)
+  \item Utilities and stuff (Aljoscha, Fabian)
+\end{itemize}
+
+There is one section per bullet point that describes that part of the system.
+
+\subsection{Some Notes}
+The Presslufthammer system is implemented in Java and we have also used the
+following tools and libraries:
+
+\begin{itemize}
+  \item Maven \cite{maven} for the build system
+  \item ANTLR \cite{antlr} for implementing the query parser
+  \item Netty \cite{netty} for the network layer
+  \item slf4j \cite{slf4j} for logging
+  \item Google guava libraries \cite{guava} because they are just plain helpful
+\end{itemize}
+
+All package names of Presslufthammer are of the form\\
+\texttt{de.tuberlin.dima.presslufthammer.*}\\
+bu we leave of the first part in the following sections for simplicity and
+just refer to package \texttt{data} instead of the full name.
+
+
+\section{Columnar Data Representation}
+
+\section{Query Processing}
+
+\section{Network Architecture}
+
+\section{Conclusions and Further Work}
