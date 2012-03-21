@@ -121,13 +121,17 @@ i.e. package \texttt{data} instead of package
     For testing and presentation of our prototype we implemented two such
     clients.
     \begin{itemize}
-      \item The first is a basic client that we use to allow command
+      \item The first is a basic client that we use to provide command
             line access to the querying system.
+            It's main purpose is the facilitating of tests.
       \item The second provides the same functionality as the first,
             but uses Jetty \cite{jetty} to provide a html based web
             interface.
+            It can provide remote access to users, without the need
+            to execute any client-side Java code.
     \end{itemize}
-    These clients use the QueryParser to parse entered queries.
+    These clients use the QueryParser to parse entered queries and obtain
+    an internal representation of these.
 
 
   \subsection{Further Details}
@@ -142,7 +146,7 @@ i.e. package \texttt{data} instead of package
         Presslufthammer and
       \item \texttt{TabletMessages} encapsulate the result data of a query.
     \end{itemize}
-    
+
 
 \section{Conclusions and Further Work}
   The main difficulty in the network architecture, was the realisation of
@@ -153,6 +157,7 @@ i.e. package \texttt{data} instead of package
   \begin{itemize}
     \item Implementation of a purely intermediate layer
     \item Implementation of a distributed storage layer (HDFS)
+    \item implementation of a richer graphical user interface
     \item Improving fault tolerance
     \item Testing and Evaluation of distributed execution
     \item Performance evaluation at scale
