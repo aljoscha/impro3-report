@@ -17,8 +17,8 @@ processed amounts of data and that are ``interactive'', meaning that the
 results are available quick enough to work with the system interactively.
 
 For more in-depth background information about Dremel and BigQuery you should
-consult the paper respectively the documentation. We will only highlight
-some key components and difficulties in the following sections.
+consult the paper or the documentation respectively. We will only highlight
+the key components and difficulties in the following sections.
 
 \subsection{Division of Work}
 
@@ -36,8 +36,8 @@ particular component is mentioned in parentheses):
 Each of these described in their own section respectively.
 
 \subsection{Some Notes}
-The Presslufthammer system is implemented in Java and also uses the
-following tools and libraries:
+The Presslufthammer system is implemented in Java and makes use of several tools
+and libraries to realise different features:
 
 \begin{itemize}
   \item Maven \cite{maven} for the build system
@@ -62,38 +62,60 @@ i.e. package \texttt{data} instead of package
 \section{Network Architecture}
   This section presents the components that comprise the network architecture
   we implemented to create the Presslufthammer system.
+  All classes of the network architecture are located in the \texttt{transport}
+  package and it's child packages \texttt{messages} and \texttt{util}.
+  
+  
   \subsection{Looking at Dremel}
-  The Dremel \cite{melnik2010dremel} system consists of a multi-layered
-  architecture including:
-  \begin{itemize}
-    \item A client to provide the user interface
-    \item A root server to communicate with the client as well as to dispatch
-      queries
-    \item Multiple intermediate servers
-    \item Multiple leaf servers to access the data and execute queries on it
-    \item And finally a seperate storage layer holding the data
-  \end{itemize}
-  This is illustrated in figure \ref{netarch}.
-  \begin{figure}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{images/net-arch}
-    \caption{The overall architecture of Dremel\cite{melnik2010dremel}}
-    \label{netarch}
-  \end{figure}
+    First take a look at the way the Dremel \cite{melnik2010dremel} system is
+    organised.
+    It consists of a multi-layered architecture including:
+    \begin{itemize}
+      \item A client to provide the user interface
+      \item A root server to communicate with the client as well as to dispatch
+        queries
+      \item Multiple intermediate servers
+      \item Multiple leaf servers to access the data and execute queries on it
+      \item And finally a seperate storage layer holding the data
+    \end{itemize}
+    This is illustrated in figure \ref{netarch}.
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=.7\textwidth]{images/net-arch}
+      \caption{The overall architecture of Dremel\cite{melnik2010dremel}}
+      \label{netarch}
+    \end{figure}
+
+
   \subsection{Coordinator Leaf Architecture}
-    For the first milestone we implemented only a root server
-    (\texttt{Coordinator}) and the leaf servers (\texttt{Leafs}).
-    The Coordinator node provides an entry point for all other nodes
-    in the system. It This allowed us to concentrate on more basic
-    communication features, such as the passing of queries and
-    resulting data.
+    For the first milestone, we implemented only a root server
+    (\texttt{Coordinator}) and the leaf servers (\texttt{Leafs}),
+    omitting the intermediate layer.
+    This allowed us to concentrate on more basic communication features,
+    such as the passing of queries and resulting data.
+    \subsubsection{The Coordinator Role}
+      The \texttt{Coordinator} node provides an entry point for all other nodes
+      in the system.
+      It is the central object used to organise the network nodes.
+      Without an intermediate layer, the \texttt{Coordinator} manages all
+      \texttt{Leafs} itself. It splits the queries based on available tablet
+      information and distributes the parts of a query among the \texttt{Leafs}.
+    
+    
   \subsection{Slave Architecture}
-    We then went on to implement an additional set of nodes based on the
+    We then went on to implement an additional set of nodes, based on the
     idea of multi purpose nodes that can take both the role of a leaf
     and an intermediate server depending on the situation.
     These nodes are called \texttt{Slaves} and work in conjunction with the
     \texttt{SlaveCoordinator}, that replaces the aforementioned 
     \texttt{Coordinator} as root server.
+    \texttt{Slaves} arrange themselves in a n-ary tree.
+    The degree of the tree is configurable at instantiation
+    and can differ between instances.
+    This way, it is possible to create subtrees of higher or lower degree
+    than the rest of the tree.
+
+
   \subsection{Client Nodes}
     The Presslufthammer system allows for multiple Client nodes to connect.
     For testing and presentation of our prototype we implemented two such
@@ -106,17 +128,34 @@ i.e. package \texttt{data} instead of package
             interface.
     \end{itemize}
     These clients use the QueryParser to parse entered queries.
+
+
   \subsection{Further Details}
     The network communication was realised using the Netty framework.
     All implemented nodes use the \texttt{GenericHandler} and
-    \texttt{GenericPipelineFactory} classes, based on standard Netty classes
+    \texttt{GenericPipelineFactory} classes, based on standard Netty classes,
     to send and receive messages.
     The system knows three types of network messages.
     \begin{itemize}
-      \item \texttt{SimpleMessages}
-      \item \texttt{QueryMessages}
-      \item \texttt{TabletMessages}
+      \item \texttt{SimpleMessages} provide the means to transmit meta data
+      \item \texttt{QueryMessages} contain the query objects used by
+        Presslufthammer and
+      \item \texttt{TabletMessages} encapsulate the result data of a query.
     \end{itemize}
     
 
 \section{Conclusions and Further Work}
+  The main difficulty in the network architecture, was the realisation of
+  the intermediate layer and the parallel management of multi-part queries
+  accross an execution tree.
+  
+  Future steps in the development of Presslufthammer could include:
+  \begin{itemize}
+    \item Implementation of a purely intermediate layer
+    \item Implementation of a distributed storage layer (HDFS)
+    \item Improving fault tolerance
+    \item Testing and Evaluation of distributed execution
+    \item Performance evaluation at scale
+  \end{itemize}
+
+
