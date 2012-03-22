@@ -152,15 +152,47 @@ i.e. package \texttt{data} instead of package
   The main difficulty in the network architecture, was the realisation of
   the intermediate layer and the parallel management of multi-part queries
   accross an execution tree.
-  
+
   Future steps in the development of Presslufthammer could include:
   \begin{itemize}
-    \item Implementation of a purely intermediate layer
-    \item Implementation of a distributed storage layer (HDFS)
-    \item implementation of a richer graphical user interface
-    \item Improving fault tolerance
-    \item Testing and Evaluation of distributed execution
-    \item Performance evaluation at scale
+    \item Implementation of a purely intermediate layer\\
+      As described earlier, we already implemented root, client and leaf layers,
+      as well as an alternative implementation that mixes intermediate and leaf
+      layers. But it appears conceivable, that specialized servers for the
+      intermediate layer could provide a valid alternative.
+      To evaluate possible benfits or deficits of either solution, this kind of
+      server would have to be implemented.
+    
+    \item Implementation of a distributed storage layer\\
+      A distributed storage layer seperate from the leaf layer, could lighten
+      storage requirements on leaf servers and allow to reap the benefits of
+      such systems, i.e. high availability, redundance and parallel access.
+      A popular option could be the HadoopFileSystem.
+    
+    \item Implementation of a richer graphical user interface\\
+      As with all software that includes direct user interaction, an intuitive
+      and full featured user interface is highly desirable and critical to 
+      said software's success. A possible solution could be a rich web client,
+      building on the one we implemented.
+    
+    \item Improving fault tolerance\\
+      Fault tolerance is one of the most important features in a highly
+      distributed system, playing a definitive role in the success of systems
+      such as MapReduce. Presslufthammer still has a lot of headroom in this
+      regard and pursuing improvements appears a worthwhile effort.
+    
+    \item Testing and Evaluation of distributed execution\\
+      In our developement, we did not have the opportunity to test
+      Presslufthammer in a truly distributed fashion on multiple nodes in a
+      network. Since this would be the natural environment intended for the
+      system's operation, it is an obvious and necessary step, going onwards.
+    
+    \item Performance evaluation at scale\\
+      When the system reaches a more mature point in it's development,
+      Presslufthammer's performance has to be evaluated to determine it's worth
+      and to identify bottlenecks and weak spots within the system. This is
+      important to assess the system and to direct further development.
+    
   \end{itemize}
 
 
