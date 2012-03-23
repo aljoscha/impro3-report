@@ -44,7 +44,7 @@ and libraries to realise different features:
   \item ANTLR \cite{antlr} for implementing the query parser
   \item Netty \cite{netty} for the network layer
   \item slf4j \cite{slf4j} for logging
-  \item Jetty \cite{jetty} as web server for a frontend and
+  \item Jetty \cite{jetty} as web server for a front end and
   \item Google guava libraries \cite{guava} because they are just plain helpful
 \end{itemize}
 
@@ -52,12 +52,121 @@ All package names of Presslufthammer are of the form\\
 \texttt{de.tuberlin.dima.presslufthammer.*},\\
 but we omit the first part in the following sections for the sake of simplicity,
 i.e. package \texttt{data} instead of package
-\texttt{de.tuberlin.dima.pressluzfthammer.data}.
+\texttt{de.tuberlin.dima.presslufthammer.data}.
 
 
 \section{Columnar Data Representation}
+The novel aspect of the Dremel system is that it stores hierarchical nested
+records in a columnar format and therefore makes queries that only
+access some of the fields of a record very efficient because only a small
+part of the data has to be read.
+
+We will not explain the special columnar data format here but only give
+some details of how things are implemented in the Presslufthammer
+system. A complete elaboration would be outside the scope if this
+rather short report and the Dremel paper \cite{melnik2010dremel}
+explains the format and the necessary algorithms very nicely.
+
+There are three parts that deal with data and we will elaborate each in
+turn in the following:
+
+\begin{description}
+  \item[Hierarchical Data] This part deals with hierarchical nested records, this
+    is the format in which data is imported into the system and also in which
+    the user is probably expecting the query results to be.
+  \item[Columnar Data] This part is concerned with the efficient format that is
+    used internally to facilitate queries at interactive speeds.
+  \item[Transformation] The data obviously needs to be transformed between the two
+    representations, this is what the transformation part is about.
+\end{description}
+
+All code that works with data is located in the \texttt{data} package,
+some common classes and the transformation code is directly in \texttt{data},
+the code that deals with the columnar format is in \texttt{data.columnar},
+and the code for hierarchical data is in \texttt{data.hierarchical}.
+
+\subsection{Auxiliary Code}
+For Presslufthammer to be able to work with data a schema description is
+necessary. We use the format used by Google Protobuffers, just as
+the Dremel system does, for the schema description.\footnote{Google BigQuery
+\cite{bigquery} does not use Protobuffer schema descriptions but instead uses
+JSON to describe the schema.}\footnote{Internally neither code nor concepts
+of Presslufthammer have anything in common with Google Protobuffers.}
+An example schema description (taken from the Dremel paper \cite{melnik2010dremel}
+is given in \lstref{document-schema}.
+
+\begin{lstlisting}[float=htpb,label={lst:document-schema},caption={Protobuf-like schema definition for the documents data-set.}]
+package Document;
+message Document {
+      required int64 DocId = 1;
+      message Links {
+            repeated int64 Backward = 1;
+            repeated int64 Forward = 2; }
+      optional Links Links = 2;
+      message Name {
+            message Language {
+                  required string Code = 1;
+                  optional string Country = 2; }
+            repeated Language Language = 1;
+            optional string Url = 2; }
+      repeated Name Name = 3; }
+\end{lstlisting}
+
+For working with schema descriptions we have \texttt{SchemaNode} for
+representing a schema as a tree data-structure, the enum \texttt{PrimitiveType}
+for representing the primitive types in a schema and \texttt{ProtobufSchemaHelper}
+for loading/parsing a schema description in the Protobuf format to a
+tree of \texttt{SchemaNodes} and also for the reverse process.
+
+\subsection{Hierarchical Data}
+Most of the code that deals with hierarchical data is concerned with
+delivering the information that is required by the column striping and record
+assembly algorithms described in the appendix of the Dremel paper \cite{melnik2010dremel}.
+All mentioned classes except \texttt{Field} are actually interfaces and the
+implementation for hierarchical data in JSON format is in the package
+\texttt{data.hierarchical.json}. We do not mention the JSON classes here
+because they are just straightforward implementations of the described
+functionality.
+
+We have class \texttt{Field} that represents one field in the hierarchical
+record. It provides methods to retrieve the \texttt{SchemaNode} of that
+particular field and to write the contained value to a column in
+the columnar data representation.\footnote{It writes the value to a
+\texttt{ColumnWriter}, see \secref{columnar} for details on that.} \texttt{Field}
+is actually an abstract class and there is a derived class for every
+primitive data type in \texttt{hierarchical.fields}.
+Then we have \texttt{FieldIterator} that is just an iterator over
+\texttt{FieldsS}, this is returned by a method in \texttt{RecordDecoder}
+which is concerned with reading the fields of one isolated hierarchical record.
+It basically only has the method returning the \texttt{FieldIterator}
+and it is again retrieved from a \texttt{RecordIterator} that is just
+an iterator over \texttt{RecordDecoders}. The \texttt{RecordIterator}
+is returned by a method in \texttt{RecordStore}. This is the main class
+that represents a source of hierarchical records that can be read using
+a \texttt{RecordIterator} and to which new records can be added by requesting
+a \texttt{RecordEncoder} which provides method to construct a new hierarchical
+record.\footnote{The record encoder provides the ``move to level'' and
+``return to level'' functionality mentioned in the appendix of the Dremel
+paper \cite{melnik2010dremel} and is used by the code that assembles
+hierarchical records from columnar data, see \secref{transform}.}
+
+\subsection{Columnar Data}
+\label{sec:columnar}
+
+\subsection{From Hierarchical to Columnar and Vice Versa}
+\label{sec:transform}
+
 
 \section{Query Processing}
+
+\subsection{Query Parser}
+
+\subsection{Semantical Analysis}
+
+\subsection{Query Transformation}
+
+\subsection{Query execution}
+
 
 \section{Network Architecture}
   This section presents the components that comprise the network architecture
@@ -146,6 +255,7 @@ i.e. package \texttt{data} instead of package
         Presslufthammer and
       \item \texttt{TabletMessages} encapsulate the result data of a query.
     \end{itemize}
+
 
 
 \section{Conclusions and Further Work}
