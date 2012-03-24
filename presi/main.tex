@@ -207,10 +207,20 @@ basicstyle=\ttfamily,
   \begin{niitemize}
     \item Provides the UI
     \item Attaches to a Coordinator
-    \item Only basic CLI version implemented
+    \item CLI or Jetty based
   \end{niitemize}
 \end{frame}
 
+\begin{frame}<presentation>{Slave Nodes}
+  Slave Node
+  \begin{niitemize}
+    \item Leaf and Inner functionality combined
+    % \item Data fetching / Storage Access
+    \item Arrange themselves in an n-ary tree
+    \item Take care of splitting/aggregating queries
+    % \item Per Tablet Query processing
+  \end{niitemize}
+\end{frame}
 
 \begin{frame}<presentation>{Issues}
 \begin{niitemize}
