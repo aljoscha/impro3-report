@@ -149,6 +149,16 @@ record.\footnote{The record encoder provides the ``move to level'' and
 ``return to level'' functionality mentioned in the appendix of the Dremel
 paper \cite{melnik2010dremel} and is used by the code that assembles
 hierarchical records from columnar data, see \secref{transform}.}
+\figref{hierarchical} shows how the different components are working together.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.8\textwidth]{images/hierarchical}
+  \caption{The classes for accessing hierarchical data.}
+  \label{fig:hierarchical}
+\end{figure}
+
+
 
 \subsection{Columnar Data}
 \label{sec:columnar}
