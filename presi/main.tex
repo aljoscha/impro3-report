@@ -184,8 +184,8 @@ basicstyle=\ttfamily,
 \begin{frame}<presentation>{Coordinator and Inner Nodes}
   Coordinator Node
   \begin{niitemize}
+    \item Central entry point
     \item Accepts Queries from Clients
-    \item Parses Queries
     \item Hands Out Jobs to Leafs
   \end{niitemize}
   Inner Nodes
@@ -223,10 +223,11 @@ basicstyle=\ttfamily,
 \end{frame}
 
 \begin{frame}<presentation>{Issues}
-\begin{niitemize}
- \item Coordination of Nodes: Intermediate Layer
- \item Proper Serialization of Meta-Data for Transfer
-\end{niitemize}
+  \begin{niitemize}
+   \item Coordination of Nodes: Intermediate Layer
+   \item Proper Serialization of Meta-Data for Transfer
+   \item Fault tolerance / Reconfigurability
+  \end{niitemize}
 \end{frame}
 
 
