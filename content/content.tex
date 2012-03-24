@@ -27,9 +27,9 @@ work. We identified to following key components (The person working on that
 particular component is mentioned in parentheses):
 
 \begin{itemize}
+  \item Network architecture (Fabian)
   \item Columnar data representation (Aljoscha)
   \item Parsing, analysis, transformation and execution of Queries (Aljoscha)
-  \item Network architecture (Fabian)
   \item Utilities and stuff (Aljoscha, Fabian)
 \end{itemize}
 
@@ -53,6 +53,94 @@ All package names of Presslufthammer are of the form\\
 but we omit the first part in the following sections for the sake of simplicity,
 i.e. package \texttt{data} instead of package
 \texttt{de.tuberlin.dima.presslufthammer.data}.
+
+\section{Network Architecture}
+  This section presents the components that comprise the network architecture
+  we implemented to create the Presslufthammer system.
+  All classes of the network architecture are located in the \texttt{transport}
+  package and it's child packages \texttt{messages} and \texttt{util}.
+  
+  
+  \subsection{Looking at Dremel}
+    First take a look at the way the Dremel \cite{melnik2010dremel} system is
+    organised.
+    It consists of a multi-layered architecture including:
+    \begin{itemize}
+      \item A client to provide the user interface
+      \item A root server to communicate with the client as well as to dispatch
+        queries
+      \item Multiple intermediate servers
+      \item Multiple leaf servers to access the data and execute queries on it
+      \item And finally a seperate storage layer holding the data
+    \end{itemize}
+    This is illustrated in \figref{netarch}.
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[width=.7\textwidth]{images/net-arch}
+      \caption{The overall architecture of Dremel\cite{melnik2010dremel}}
+      \label{fig:netarch}
+    \end{figure}
+
+
+  \subsection{Coordinator Leaf Architecture}
+    For the first milestone, we implemented only a root server
+    (\texttt{Coordinator}) and the leaf servers (\texttt{Leafs}),
+    omitting the intermediate layer.
+    This allowed us to concentrate on more basic communication features,
+    such as the passing of queries and resulting data.
+    \subsubsection{The Coordinator Role}
+      The \texttt{Coordinator} node provides an entry point for all other nodes
+      in the system.
+      It is the central object used to organise the network nodes.
+      Without an intermediate layer, the \texttt{Coordinator} manages all
+      \texttt{Leafs} itself. It splits the queries based on available tablet
+      information and distributes the parts of a query among the \texttt{Leafs}.
+    
+    
+  \subsection{Slave Architecture}
+    We then went on to implement an additional set of nodes, based on the
+    idea of multi purpose nodes that can take both the role of a leaf
+    and an intermediate server depending on the situation.
+    These nodes are called \texttt{Slaves} and work in conjunction with the
+    \texttt{SlaveCoordinator}, that replaces the aforementioned 
+    \texttt{Coordinator} as root server.
+    \texttt{Slaves} arrange themselves in a n-ary tree.
+    The degree of the tree is configurable at instantiation
+    and can differ between instances.
+    This way, it is possible to create subtrees of higher or lower degree
+    than the rest of the tree.
+
+
+  \subsection{Client Nodes}
+    The Presslufthammer system allows for multiple Client nodes to connect.
+    For testing and presentation of our prototype we implemented two such
+    clients.
+    \begin{itemize}
+      \item The first is a basic client that we use to provide command
+            line access to the querying system.
+            It's main purpose is the facilitating of tests.
+      \item The second provides the same functionality as the first,
+            but uses Jetty \cite{jetty} to provide a html based web
+            interface.
+            It can provide remote access to users, without the need
+            to execute any client-side Java code.
+    \end{itemize}
+    These clients use the QueryParser to parse entered queries and obtain
+    an internal representation of these.
+
+
+  \subsection{Further Details}
+    The network communication was realised using the Netty framework.
+    All implemented nodes use the \texttt{GenericHandler} and
+    \texttt{GenericPipelineFactory} classes, based on standard Netty classes,
+    to send and receive messages.
+    The system knows three types of network messages.
+    \begin{itemize}
+      \item \texttt{SimpleMessages} provide the means to transmit meta data
+      \item \texttt{QueryMessages} contain the query objects used by
+        Presslufthammer and
+      \item \texttt{TabletMessages} encapsulate the result data of a query.
+    \end{itemize}
 
 
 \section{Columnar Data Representation}
@@ -158,8 +246,6 @@ hierarchical records from columnar data, see \secref{transform}.}
   \label{fig:hierarchical}
 \end{figure}
 
-
-
 \subsection{Columnar Data}
 \label{sec:columnar}
 
@@ -205,103 +291,63 @@ The record assembly code is implemented in \texttt{AssmelbyFSM} and
 
 \section{Query Processing}
 
-\subsection{Query Parser}
+When a query arrives at the Coordinator (or SlaveCoordinator) from a client
+the query needs to be parsed, analyzed for semanticl correctness,
+transformed, sent to lower layers in the network and executed to generate
+the result for the client. The interesting parts of this
+are examined in the following sections.
 
-\subsection{Semantical Analysis}
+The Presslufthammer system can understand queries that look quite like
+the pseudo-SQL queries mentioned in the Dremel paper \cite{melnik2010dremel}
+and also used by the Google BigQuery system \cite{bigquery}. Our queries
+are nevertheless nowhere near as powerfull, since the Presslufthammer system
+is still a prototype. 
+Some queries that can be processed by the system
+are given in \lstref{queries}.
+
+\begin{lstlisting}[basicstyle=\scriptsize\ttfamily,float=htpb,label={lst:queries},caption={Some example queries that can be processed by Presslufthammer.}]
+SELECT * FROM Document
+SELECT * FROM Document WHERE Document.Name.Language.Country == "gb"
+SELECT * FROM Sentence
+SELECT * FROM Sentence WHERE Sentence.predicate.arguments.role == "PMOD" OR Sentence.predicate.arguments.role == "NMOD"
+SELECT * FROM Sentence WHERE Sentence.predicate.arguments.role == "ADV" OR Sentence.predicate.arguments.role == "DEP"
+SELECT Document.DocId AS ID, COUNT(Document.Links.Forward) AS bla FROM Document
+SELECT COUNT(Sentence.predicate.text) FROM Sentence
+SELECT Sentence.predicate.text, COUNT(Sentence.predicate.arguments.text) FROM Sentence WHERE Sentence.predicate.arguments.role == "ADV"
+SELECT Sentence.predicate.text, COUNT(Sentence.predicate.arguments.text) FROM Sentence
+\end{lstlisting}
+
+The classes representing a parsed query are in \texttt{query}, they
+are \texttt{Query}, \texttt{SelectClause} and \texttt{WhereClause} which
+correspond to the respective parts of a query.
+The query parser is implemented as an ANTLR \cite{antlr} grammer that directly
+generates a \texttt{Query} object as a result of parsing. The parser code
+is in \texttt{query.parser}. After parsing the query it must be checked
+for semantic correctness, for example it must be checked whether the
+referenced table exists and whether the table has the fields mentioned
+in the select clauses and where clauses. The semantical analysis code
+is in \texttt{query.sema} but as of now it does no analysis besides checking
+whether the referenced table exists. (This also means all entered queries
+must be correct, otherwise the system will blow up.)
 
 \subsection{Query Transformation}
+As mentioned in the Dremel paper \cite{melnik2010dremel} the query must
+be transformed before handing it down to child nodes in the network,
+and also the query that combines the result from the children must be
+rewritten from the original query. This is mostly due to the presence
+of aggregation functions. The code that does the transformation of a
+\texttt{Query} is in the package \texttt{query.qexec} in the class
+\texttt{QueryHelper} it determines the query that must be sent to the child,
+the query that is used to stitch together the results form the children
+and also some other useful things such as the schema of a query result.
 
 \subsection{Query execution}
-
-
-\section{Network Architecture}
-  This section presents the components that comprise the network architecture
-  we implemented to create the Presslufthammer system.
-  All classes of the network architecture are located in the \texttt{transport}
-  package and it's child packages \texttt{messages} and \texttt{util}.
-  
-  
-  \subsection{Looking at Dremel}
-    First take a look at the way the Dremel \cite{melnik2010dremel} system is
-    organised.
-    It consists of a multi-layered architecture including:
-    \begin{itemize}
-      \item A client to provide the user interface
-      \item A root server to communicate with the client as well as to dispatch
-        queries
-      \item Multiple intermediate servers
-      \item Multiple leaf servers to access the data and execute queries on it
-      \item And finally a seperate storage layer holding the data
-    \end{itemize}
-    This is illustrated in \figref{netarch}.
-    \begin{figure}[ht]
-      \centering
-      \includegraphics[width=.7\textwidth]{images/net-arch}
-      \caption{The overall architecture of Dremel\cite{melnik2010dremel}}
-      \label{fig:netarch}
-    \end{figure}
-
-
-  \subsection{Coordinator Leaf Architecture}
-    For the first milestone, we implemented only a root server
-    (\texttt{Coordinator}) and the leaf servers (\texttt{Leafs}),
-    omitting the intermediate layer.
-    This allowed us to concentrate on more basic communication features,
-    such as the passing of queries and resulting data.
-    \subsubsection{The Coordinator Role}
-      The \texttt{Coordinator} node provides an entry point for all other nodes
-      in the system.
-      It is the central object used to organise the network nodes.
-      Without an intermediate layer, the \texttt{Coordinator} manages all
-      \texttt{Leafs} itself. It splits the queries based on available tablet
-      information and distributes the parts of a query among the \texttt{Leafs}.
-    
-    
-  \subsection{Slave Architecture}
-    We then went on to implement an additional set of nodes, based on the
-    idea of multi purpose nodes that can take both the role of a leaf
-    and an intermediate server depending on the situation.
-    These nodes are called \texttt{Slaves} and work in conjunction with the
-    \texttt{SlaveCoordinator}, that replaces the aforementioned 
-    \texttt{Coordinator} as root server.
-    \texttt{Slaves} arrange themselves in a n-ary tree.
-    The degree of the tree is configurable at instantiation
-    and can differ between instances.
-    This way, it is possible to create subtrees of higher or lower degree
-    than the rest of the tree.
-
-
-  \subsection{Client Nodes}
-    The Presslufthammer system allows for multiple Client nodes to connect.
-    For testing and presentation of our prototype we implemented two such
-    clients.
-    \begin{itemize}
-      \item The first is a basic client that we use to provide command
-            line access to the querying system.
-            It's main purpose is the facilitating of tests.
-      \item The second provides the same functionality as the first,
-            but uses Jetty \cite{jetty} to provide a html based web
-            interface.
-            It can provide remote access to users, without the need
-            to execute any client-side Java code.
-    \end{itemize}
-    These clients use the QueryParser to parse entered queries and obtain
-    an internal representation of these.
-
-
-  \subsection{Further Details}
-    The network communication was realised using the Netty framework.
-    All implemented nodes use the \texttt{GenericHandler} and
-    \texttt{GenericPipelineFactory} classes, based on standard Netty classes,
-    to send and receive messages.
-    The system knows three types of network messages.
-    \begin{itemize}
-      \item \texttt{SimpleMessages} provide the means to transmit meta data
-      \item \texttt{QueryMessages} contain the query objects used by
-        Presslufthammer and
-      \item \texttt{TabletMessages} encapsulate the result data of a query.
-    \end{itemize}
-
+The query execution code is in \texttt{query.qexec}. We use the algorithm
+from the appendix of the Dremel paper with some modifications to make it
+actually work in our system. The basic idea is to advance a set of
+\texttt{ColumnReader}s in lockstep and we have class \texttt{Slice} exactly
+for doing that and also for writing the current result values to
+\texttt{ColumnWriters} that are retrieved from an in-memory result tablet.
 
 
 \section{Conclusions and Further Work}
