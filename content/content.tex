@@ -163,8 +163,44 @@ hierarchical records from columnar data, see \secref{transform}.}
 \subsection{Columnar Data}
 \label{sec:columnar}
 
+For columnar data we use the same terminology that is used in the Dremel
+paper \cite{melnik2010dremel}\footnote{Again, most of the ``classes''
+mentioned here are either abstract base classes or interfaces with more
+or less trivial implementations.}: A \texttt{Tablet} stores the columnar
+data of one partition of a Table. The \texttt{DataStore} manages
+the collection of all \texttt{Tablets} of the different tables. Right
+now the only implementation of \texttt{DataStore} is the \texttt{LocalDiskDataStore}
+which manages the columnar data on the local file system. But it is possible
+to implement, for example, a \texttt{HDFSDataStore} that stores columnar
+data in a HDFS cluster.
+
+Data is read from a column using a \texttt{ColumnReader} that can be
+retrieved from a \texttt{Tablet} instance. \texttt{ColumnWriter} is the
+class that is used to write data to a column. At the moment there exist
+three implementations of \texttt{Tablet}: \texttt{LocalDiskTablet} that
+manages column data on the local file system and
+\texttt{InMemoryReadonlyFilesystem} and \texttt{InMemoryWriteonlyFilesystem}
+which are used as intermediate tablets for storing query results and
+transmitting them over the network.
+
 \subsection{From Hierarchical to Columnar and Vice Versa}
 \label{sec:transform}
+
+Transforming hierarchical data to columnar data is done by the column
+striping algorithm described in the appendix of the Dremel paper
+\footnote{The description in the paper is little
+to simplistic though and getting it to work correctly is a bit ``tricky''.}
+\cite{melnik2010dremel}
+while the other direction is handled by a so-called \term{assembly FSM} which
+is also described in the paper.
+
+The field striping is implemented in class \texttt{FieldStriper} which
+uses a tree of \texttt{FieldWriter} to to do the actual writing to
+the columnar data.\footnote{The implementation of the algorithm is rather
+simple with all the previously mentioned infrastructure in place.}
+
+The record assembly code is implemented in \texttt{AssmelbyFSM} and
+\texttt{AssemblyFSMNode} which represents on node in the generated FSM.
 
 
 \section{Query Processing}
