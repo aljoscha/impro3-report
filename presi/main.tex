@@ -141,6 +141,23 @@ basicstyle=\ttfamily,
 \includegraphics[width=.49\textwidth]{gfx/partial-assemblyfsm}
 \end{frame}
 
+\begin{frame}<presentation>{Storage Layer}
+\begin{niitemize}
+ \item For now we use local file system to store columnar data
+ \item System is general enough to allow other storage backends
+ \item Could implement proprietary storage layer:
+   \begin{niitemize}
+     \item Need to handle fault tolearnce, replication ...
+     \item Better optimized for task
+   \end{niitemize}
+ \item Use HDFS for storage layer:
+   \begin{niitemize}
+     \item Has most stuff out-of-box
+     \item Not as efficient
+   \end{niitemize}
+\end{niitemize}
+\end{frame}
+
 \begin{frame}<presentation>{Issues}
 \begin{niitemize}
  \item Data format difficult to understand, sometimes descriptions
@@ -151,14 +168,34 @@ basicstyle=\ttfamily,
 \end{niitemize}
 \end{frame}
 
+
 \section{Query Execution}
-\begin{frame}<presentation>{Query Execution}
+
+
+\begin{frame}<presentation>[fragile]{Supported Queries}
 \begin{niitemize}
- \item Only projection for now
- \item Uses columnar data throughout, only last result as
-  records (hierarchical) to client
- \item Columnar data read from source tablet into target tablet, ignoring
-  columns that are projected out
+  \item We support select-project-aggregate queries with where clauses in pseudo-SQL language
+  \item Renaming is supported
+  \item COUNT and SUM as aggregation functions
+  \item Only != and == operators in expressions, combining expressions only with OR
+  \item Uses columnar data throughout, only last result as
+    records (hierarchical) to client
+  \item Columnar data read from source tablet into target tablet, ignoring
+    columns that are projected out
+\end{niitemize}
+\end{frame}
+
+\begin{frame}<presentation>[fragile]{Query Execution}
+\begin{niitemize}
+ \item Query parser using ANTLR
+ \item Semantical analysis (very basic for now)
+ \item Query rewriting (Schema rewriting):
+   \begin{niitemize}
+     \item \verb#SELECT COUNT(bla) FROM Foo# \ra{} \verb#SELECT COUNT(bla) FROM Foo:x# and
+       \verb#SELECT SUM(bla) FROM Foo#
+   \end{niitemize}
+ \item Query execution on leafs
+ \item Grouping is hash based, so system blows up with too many groups\footnote{Also the case with Google BigQuery}
 \end{niitemize}
 \end{frame}
 
@@ -166,6 +203,9 @@ basicstyle=\ttfamily,
 \begin{niitemize}
  \item Query processing only sketched in paper, only basic
   select-project-aggregate
+ \item Is rather slow because for every emitted value the where expressions
+  are evaluated
+ \item Would greatly benefit from JIT
 \end{niitemize}
 \end{frame}
 
@@ -221,17 +261,19 @@ basicstyle=\ttfamily,
 
 
 
-\section{TODO}
-\begin{frame}<presentation>{TODO}
+\section{Conclusions and Further Work}
+\begin{frame}<presentation>{Further Work}
 \begin{niitemize}
- \item Write unittests for a lot of things to be confident that changes
-  do not break things
- \item Maybe add a proper storage layer
- \item Revisit the striping/assembly algorithms
- \item Implement proper query handling using a pseudo-SQL language
- \item Probably rethink networking code, implement real network
-  topology (root, inner nodes, leafs)
- \item Code generation for query processing
+  \item Implementation of a purely intermediate layer
+  \item Implementation of a distributed storage layer
+  \item Implementation of a richer graphical user interface
+  \item Improving fault tolerance
+  \item Testing and Evaluation of distributed execution
+  \item Performance evaluation at scale
+  \item Proper semantical analysis of queries
+  \item Join of several tables
+  \item Optimization of queries
+  \item Code generation for query execution
 \end{niitemize}
 \end{frame}
 
