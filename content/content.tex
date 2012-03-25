@@ -394,6 +394,18 @@ for doing that and also for writing the current result values to
       Presslufthammer's performance has to be evaluated to determine it's worth
       and to identify bottlenecks and weak spots within the system. This is
       important to assess the system and to direct further development.
+
+    \item Support of join queries\\
+      Google BigQuery gained support for join queries in the most recent
+      version and it is surely an interresting task to find out how
+      joins over big data can be performed in interactive runtimes.
+    
+    \item Code generation for query execution\\
+      Right now a lot of code is executed for every emitted value in
+      query execution, mostly in the presence of where clauses and for
+      aggregations. The runtime of those queries could be greatly
+      reduced by generating special case code for that and just-in-time
+      compiling this code.
     
   \end{itemize}
 
