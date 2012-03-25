@@ -224,8 +224,8 @@ basicstyle=\ttfamily,
 \begin{frame}<presentation>{Coordinator and Inner Nodes}
   Coordinator Node
   \begin{niitemize}
+    \item Central entry point
     \item Accepts Queries from Clients
-    \item Parses Queries
     \item Hands Out Jobs to Leafs
   \end{niitemize}
   Inner Nodes
@@ -247,16 +247,27 @@ basicstyle=\ttfamily,
   \begin{niitemize}
     \item Provides the UI
     \item Attaches to a Coordinator
-    \item Only basic CLI version implemented
+    \item CLI or Jetty based
   \end{niitemize}
 \end{frame}
 
+\begin{frame}<presentation>{Slave Nodes}
+  Slave Node
+  \begin{niitemize}
+    \item Leaf and Inner functionality combined
+    % \item Data fetching / Storage Access
+    \item Arrange themselves in an n-ary tree
+    \item Take care of splitting/aggregating queries
+    % \item Per Tablet Query processing
+  \end{niitemize}
+\end{frame}
 
 \begin{frame}<presentation>{Issues}
-\begin{niitemize}
- \item Coordination of Nodes: Intermediate Layer
- \item Proper Serialization of Meta-Data for Transfer
-\end{niitemize}
+  \begin{niitemize}
+   \item Coordination of Nodes: Intermediate Layer
+   \item Proper Serialization of Meta-Data for Transfer
+   \item Fault tolerance / Reconfigurability
+  \end{niitemize}
 \end{frame}
 
 
